@@ -50,15 +50,26 @@
                         int uid=Integer.parseInt(request.getParameter("uid"));
                         t = new Turf();
                         u = new Users();
-			
+			String query="delete from bookings where tid=(select tid from turf where uid=?)";
+			try
+        		{
+				            Connection conn = DBConnection.makeConnection();
+				            PreparedStatement ps = conn.prepareStatement(query);
+				            ps.setInt(1,uid);
+				            ps.executeUpdate();
+		         } 
+		         catch(SQLException e)
+			 {
+			        	e.printStackTrace();
+      		         }
                         if(t.deleteTurf(uid))
                             if(u.deleteUser(uid))
                                 response.sendRedirect("admin.jsp");
 			             else{
-                            out.println("<script>alert('some error occured to remove')");
-                             out.println("setInterval(window.location.href ='admin.jsp', 3000)</script>");
-                        }
-        }
+					    out.println("<script>alert('some error occured to remove')");
+					     out.println("setInterval(window.location.href ='admin.jsp', 3000)</script>");
+                        		}
+        	}
 		else if(s1.equals("update"))
 		{
                     String path=request.getParameter("path");
