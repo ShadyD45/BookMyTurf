@@ -1,0 +1,39 @@
+body{        
+        padding-top: 0px;
+        padding-bottom: 40px;
+        opacity: .9;
+    }
+    .container{
+        width: 95%;
+        margin: 0 auto;/*  Center the DIV horizontally */
+    }
+    
+    .fixed-footer{
+        bottom: 0;
+    }    
+    /* Some more styles to beutify this example */
+    nav a{
+        color: #fff;
+        text-decoration: none;
+        padding: 7px 25px;
+        display: inline-block;
+        align-content: left;
+        
+    }
+    .container p{
+        line-height: 200px; /* Create scrollbar to test positioning */
+    }
+    
+    .fixed-footer{
+        height: 10px;
+        width: 100%;
+        position: fixed;        
+        background: #333;
+        padding: 10px 0;
+        color: #fff;
+    }
+    .fixed-header{
+        top: 0;
+    }
+
+
