@@ -7,9 +7,10 @@
 		int tid;
 		String query;
 		Connection conn = DBConnection.makeConnection();
-			Statement ps=null;
-			PreparedStatement ps1=null,ps2=null;
-			ResultSet rs1=null,rs2=null,rs=null;
+		Statement ps=null;
+		PreparedStatement ps1=null,ps2=null,ps3=null;
+		ResultSet rs1=null,rs2=null,rs=null,rs3=null;
+	
 		if(mail==null)
         {
 			response.sendRedirect("index.jsp");
@@ -21,21 +22,29 @@
 			tid=Integer.parseInt(tid1);
 
 			
-
-			query= "select * from bookings";
-			ps=conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			query= "select MAX(bid) from bookings";
+			ps=conn.createStatement();
 			rs=ps.executeQuery(query);
-			rs.last();
 
-			query="select * from users where uid = ?";
-			ps1=conn.prepareStatement(query);
-			ps1.setInt(1,uid);
-			rs1=ps1.executeQuery();
+			if(rs.next())
+			{
+				int bid = rs.getInt(1);
 
-			query="select * from turf";
-			ps2=conn.prepareStatement(query);
-			rs2=ps2.executeQuery();
-		
+				query= "select * from bookings where bid=?";
+				ps3=conn.prepareStatement(query);
+				ps3.setInt(1,bid);
+				rs3=ps3.executeQuery();
+				rs3.next();
+
+				query="select * from users where uid = ?";
+				ps1=conn.prepareStatement(query);
+				ps1.setInt(1,uid);
+				rs1=ps1.executeQuery();
+
+				query="select * from turf";
+				ps2=conn.prepareStatement(query);
+				rs2=ps2.executeQuery();
+			}
 %>
 
 <html lang="en">
@@ -79,7 +88,7 @@
 						<div><span>EMAIL</span> <a> <%= rs1.getString("email") %> </a></div>
 						<div><span>DATE</span> <%		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");    
 					   									Date currDate = new Date(); out.print(sdf.format(currDate)); %> </div>
-						<div><br><center><span>BOOKING_ID : </span>  <%= rs.getInt("bid") %></center></div></div>
+						<div><br><center><span>BOOKING_ID : </span>  <%= rs3.getInt("bid") %></center></div></div>
 <% 					} 
 %>
     </header>
@@ -87,7 +96,7 @@
       <table>
         <thead>
           <tr>
-            <th>DTAE</th>
+            <th>DAT-E</th>
             <th class="service">FROM-TO</th>
             <th class="desc">DURATION</th>
             <th>PAID</th>
@@ -100,12 +109,12 @@
 			// 	rs.last();
 %>
           <tr>
-			<td class="service"><%= rs.getString("booking_date") %> </td>
-            <td class="service"> <%= rs.getString("from_time") %> - <%= rs.getString("to_time") %> </td>
-			<td class="service"><%= rs.getString("duration") %> hr </td>
-			<td class="unit"> <%= rs.getString("paid_amount") %>  </td>
-            <td class="qty"> <%= rs.getString("pending_amount") %> </td>
-            <td class="total"> <%= rs.getString("total_amount") %> </td>
+			<td class="service"><%= rs3.getString("booking_date") %> </td>
+            <td class="service"> <%= rs3.getString("from_time") %> - <%= rs3.getString("to_time") %> </td>
+			<td class="service"><%= rs3.getString("duration") %> hr </td>
+			<td class="unit"> <%= rs3.getString("paid_amount") %>  </td>
+            <td class="qty"> <%= rs3.getString("pending_amount") %> </td>
+            <td class="total"> <%= rs3.getString("total_amount") %> </td>
           </tr>
          
         </tbody>
@@ -120,6 +129,15 @@
     </footer>
   </body>
 <%
+	rs.close();
+	rs1.close();
+	rs2.close();
+	rs3.close();
+	ps1.close();
+	ps2.close();
+
+	ps.close();
+	conn.close();
 	}
 	
 %>
