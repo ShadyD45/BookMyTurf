@@ -17,6 +17,10 @@
 							ps=conn.prepareStatement(query);
 							ps.setInt(1,bid);
 							ps.executeUpdate();
+                                                        rs.close();
+							ps.close();
+							conn.close();
+
 	                        response.sendRedirect("bookings.jsp");
 					}
 					
