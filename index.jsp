@@ -7,9 +7,9 @@
     <title>Book My Turf</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
-
+<%@ include file="header.jsp" %> 
 <body>
-    <%@ include file="header.jsp" %> 
+    
    
     <!-- Code for showing all the turfs in the database -->  
     <%
@@ -34,44 +34,50 @@
            
             rs = ps.executeQuery();
             String V="V";
-            try{
-
+      try
+      {
             while(rs.next())
             {        
             		 String query1 = "select verificationstatus from users where uid = ?";
 
 		             ps1 = conn.prepareStatement(query1);
-					 ps1.setInt(1,rs.getInt("uid"));
-					 rs1 = ps1.executeQuery();
+      					 ps1.setInt(1,rs.getInt("uid"));
+      					 rs1 = ps1.executeQuery();
 
-				while(rs1.next()){
-				if(V.equals(rs1.getString("verificationstatus"))){
-    %>
-				<div class='middle'>
-                <div class="flex-container">
-                      <div class="gallery">
-                          <a target="_blank" href="images/TurfLogo/<%= rs.getString("logo") %>">
-                              <img src=images/TurfLogo/<%= rs.getString("logo") %> width="800" height="600">
-                          </a>
-                              &nbsp;&nbsp;<center><span style="background-color: #A5C1E1;"><b> <%= rs.getString("tname")%> / <%= rs.getString("addr")%> 
-							 </b><br>&nbsp;&nbsp;<b>Price/Hr: <%= rs.getInt("rph") %></b></span></center>
-                         <div class="desc">
-                             <form action="bookturf.jsp" method="post">
-                                 <input type="hidden" name="tid" value=<%= rs.getString("tid")%> >
-                                 <input type="submit" value="Book Now">
-                             </form>
-                         </div>   
-                      </div> </div>
-                </div>
-    <%					}
-					}      
-            	}
-		}
-		catch(Exception e){
-			System.out.println(e);
-		}
+          				while(rs1.next())
+                  {
+            				  if(V.equals(rs1.getString("verificationstatus")))
+                      {
+                %>
+            				    <div class='middle'>
+                            <div class="flex-container">
+                                  <div class="gallery">
+                                      <a target="_blank" href="images/TurfLogo/<%= rs.getString("logo") %>">
+                                          <img src=images/TurfLogo/<%= rs.getString("logo") %> width="800" height="600">
+                                      </a>
+                                          &nbsp;&nbsp;<center><span style="background-color: #A5C1E1;"><b> <%= rs.getString("tname")%> / <%= rs.getString("addr")%> 
+            							 </b><br>&nbsp;&nbsp;<b>Price/Hr: <%= rs.getInt("rph") %></b></span></center>
+                                     <div class="desc">
+                                         <form action="bookturf.jsp" method="post">
+                                             <input type="hidden" name="tid" value=<%= rs.getString("tid")%> >
+                                             <input type="submit" value="Book Now">
+                                         </form>
+                                     </div>   
+                                  </div> </div>
+                            </div>
+                <%			}
+          					}      
+            }
+		  }
+		  catch(Exception e){
+			  System.out.println(e);
+		  }
 		
-       
+       rs1.close();
+       rs.close();
+       ps.close();
+       ps1.close();
+       conn.close();
     %>
     <!-- End of all Turf Display container -->
 
@@ -97,9 +103,10 @@
   -->
  
        
-    <%@ include file="footer.jsp" %> 
+    
     
 </body>
 
 
 </html>
+<%@ include file="footer.jsp" %> 
