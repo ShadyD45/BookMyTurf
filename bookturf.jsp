@@ -231,10 +231,28 @@
                 <div class="container">
                     <div class="booking-form" id="myForm">
 
-                        <h2>All the Booked Timings For Selected Date</h2>
+                        <h2><Span style="background-color:#3393ff;">All the Booked Timings For Selected Date
+<%
+
+						Connection conn=DBConnection.makeConnection();
+						PreparedStatement ps=null;
+						ResultSet rs=null;
+
+										String query = "select from_time,to_time from bookings where booking_date = ?";
+										PreparedStatement ps1 = conn.prepareStatement(query);
+										String date=(String)session.getAttribute("date");
+										String usedate=(String)date;
+										ps1.setString(1,usedate);
+										
+										ResultSet rs1 = ps1.executeQuery();
+										out.print("From  :  To");
+										while(rs1.next())
+											out.print("<br>"+rs1.getString("from_time")+" : "+rs1.getString("to_time"));
+%>
                         
-                        <button type="button" class="cancel" onclick="window.location.href ='bookturf.jsp'">Close</button>
-                        
+                        <br><button type="button" class="cancel" onclick="window.location.href ='bookturf.jsp'">Close</button>
+                        </Span>
+                        </h2>
                     </div>
                 </div>
             </div>
