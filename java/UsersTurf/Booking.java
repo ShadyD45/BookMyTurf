@@ -146,10 +146,6 @@ public class Booking extends DBConnection{
         {
             return true;
         }
-        else if(givenFromTime.compareTo(from_time)==0 && givenToTime.isAfter(to_time))
-        {
-            return true;
-        }
         else
         {
             return givenFromTime.isAfter(from_time) && givenFromTime.isBefore(to_time) ||
@@ -157,6 +153,7 @@ public class Booking extends DBConnection{
                    givenFromTime.isBefore(from_time) && givenToTime.isAfter(to_time);
         }
         /*
+          Attempt to optimize the code (In testing phase)
             return givenFromTime.isAfter(from_time) && givenFromTime.isBefore(to_time) ||
                        givenToTime.isAfter(from_time) && givenToTime.isBefore(to_time) ||
                        givenFromTime.isBefore(from_time) && givenToTime.isAfter(to_time);
