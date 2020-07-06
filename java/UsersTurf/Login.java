@@ -9,7 +9,7 @@ import java.sql.*;
 import DBConnection.*;
 /**
  *
- * @author root
+ * @author ShadyD45
  */
 public class Login extends DBConnection
 {
